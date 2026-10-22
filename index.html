@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>$WASTED · You died. Your bags didn't.</title>
+  <meta name="description" content="$WASTED: the GTA death screen, now on Solana. Fair launch on pump.fun.">
+  <meta name="theme-color" content="#0a0a0b">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="$WASTED · You died. Your bags didn't.">
+  <meta property="og:description" content="The most relatable screen in gaming, now on Solana.">
+  <meta property="og:image" content="assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="home">
+
+  <!-- Endless meme wall -->
+  <div class="wall-shift" id="wallShift"><div class="wall" id="wall" aria-hidden="true"></div></div>
+  <div class="grade" aria-hidden="true"></div>
+  <div class="shade" aria-hidden="true"></div>
+
+  <!-- Top bar -->
+  <header class="top">
+    <a class="brand" href="#" data-go="home" aria-label="$WASTED home">
+      <img src="assets/wasted.png" alt="" width="392" height="102">
+      <span>$WASTED</span>
+    </a>
+
+    <div class="tabs-wrap">
+      <span class="kbd hint" aria-hidden="true">Q</span>
+      <nav class="tabs" aria-label="Sections">
+        <button class="tab" data-go="home" aria-current="page">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+          <span>Home</span>
+        </button>
+        <button class="tab" data-go="lore">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v18H6.5A2.5 2.5 0 0 1 4 19.5z"/><path d="M8 7h8M8 11h6"/></svg>
+          <span>Lore</span>
+        </button>
+        <button class="tab" data-go="buy">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h9.8a1 1 0 0 0 1-.8L21 7H6"/></svg>
+          <span>How to buy</span>
+        </button>
+        <button class="tab" data-go="stats">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M11 20V4M17 20v-6M2 20h20"/></svg>
+          <span>Tokenomics</span>
+        </button>
+        <button class="tab" data-go="memes">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          <span>Meme wall</span>
+        </button>
+        <button class="tab" data-go="studio">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
+          <span>Wasted-ify</span>
+        </button>
+      </nav>
+      <span class="kbd hint" aria-hidden="true">E</span>
+    </div>
+
+    <div class="hud">
+      <div class="money" title="Market cap (live from DexScreener)">
+        <small>MCAP</small><span class="cur">$</span><span id="mcap">0</span>
+      </div>
+      <div class="wanted" id="wanted" aria-label="Wanted level 0 of 5" role="img">
+        <svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <main class="stage">
+
+    <!-- HOME -->
+    <section class="hero" id="page-home" aria-label="Home">
+      <p class="kicker"><i class="pulse"></i>Live on Solana · Fair launch on pump.fun</p>
+      <h1 class="band">
+        <img class="logo" src="assets/wasted.png" srcset="assets/wasted.png 392w, assets/wasted@2x.png 784w" sizes="620px" alt="Wasted" width="392" height="102">
+      </h1>
+      <p class="tagline">You died. <strong>Your bags didn't.</strong></p>
+
+      <div class="ca-chip">
+        <span class="ca-label">CA</span>
+        <code class="ca-full" data-ca></code>
+        <code class="ca-short" data-ca-short></code>
+        <button class="copy" data-copy aria-label="Copy contract address">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          <span class="copy-txt">Copy</span>
+        </button>
+      </div>
+
+      <div class="cta">
+        <a class="btn btn-red" data-link="pump">Buy $WASTED</a>
+        <a class="btn btn-ghost" data-link="dex">Chart</a>
+        <button class="btn btn-ghost btn-die" data-action="die">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a7 7 0 0 0-4 12.7V18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 3z"/><circle cx="9.5" cy="10.5" r="1.3"/><circle cx="14.5" cy="10.5" r="1.3"/><path d="M10 19v2M14 19v2"/></svg>
+          Get wasted
+        </button>
+      </div>
+
+      <div class="socials socials-hero">
+        <a class="soc" data-link="x" data-name="X" aria-label="X"><svg viewBox="0 0 24 24" class="fill"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25H8.1l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg></a>
+        <a class="soc" data-link="telegram" data-name="Telegram" aria-label="Telegram"><svg viewBox="0 0 24 24" class="fill"><path d="M21.94 4.3 18.7 19.6c-.24 1.08-.88 1.34-1.78.84l-4.92-3.63-2.37 2.29c-.26.26-.48.48-.99.48l.35-5.02 9.14-8.26c.4-.35-.09-.55-.62-.2L6.21 13.2l-4.86-1.52c-1.06-.33-1.08-1.06.22-1.57L20.6 2.77c.88-.32 1.65.2 1.34 1.53z"/></svg></a>
+        <a class="soc" data-link="pump" aria-label="pump.fun"><svg viewBox="0 0 24 24"><rect x="2.5" y="8.5" width="19" height="7" rx="3.5" transform="rotate(-35 12 12)"/><path d="M9.6 8.6l4.8 6.8"/></svg></a>
+        <a class="soc" data-link="dex" aria-label="DexScreener"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h6v6"/></svg></a>
+      </div>
+    </section>
+
+    <!-- LORE -->
+    <section class="panel" id="page-lore" aria-labelledby="h-lore" inert>
+      <div class="panel-head">
+        <h2 id="h-lore">Lore</h2><span class="sub">Mission brief</span>
+        <button class="back" data-go="home"><span class="kbd">Esc</span>Back</button>
+      </div>
+      <div class="panel-body">
+        <div class="lore">
+          <div class="lore-text">
+            <p class="eyebrow">How it ends, every time</p>
+            <p class="lead">The screen slows down. The colour drains out. A low boom hits, and one word slams across the middle of your monitor: <em>wasted</em>.</p>
+            <p>Every GTA player has seen it a thousand times. Then the internet got hold of it. Real-life fails got the same treatment: the bike crash, the trampoline gone wrong, the shopping-cart disaster. Freeze the frame, kill the colour, stamp it. One of the longest-running formats on the internet.</p>
+            <p><strong>$WASTED</strong> takes that moment on-chain. No roadmap promises and no fake utility. Just the most relatable screen in gaming, and a community that has been wasted at least once.</p>
+
+            <ol class="timeline">
+              <li><b>2001</b><span><strong>GTA III</strong>The word first hits the death screen.</span></li>
+              <li><b>2013</b><span><strong>GTA V</strong>Slow-mo, grayscale, that boom. Perfected.</span></li>
+              <li><b>2014</b><span><strong>The internet</strong>Vine and YouTube start wasting real-life fails.</span></li>
+              <li class="now"><b>Now</b><span><strong>Solana</strong>$WASTED launches fair on pump.fun.</span></li>
+            </ol>
+          </div>
+          <figure class="exhibit">
+            <div class="exhibit-frame" id="exhibit"></div>
+            <figcaption>
+              <span id="exhibitNo">Exhibit #01</span>
+              <button class="link-btn" id="exhibitNext">Next exhibit →</button>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO BUY -->
+    <section class="panel" id="page-buy" aria-labelledby="h-buy" inert>
+      <div class="panel-head">
+        <h2 id="h-buy">How to buy</h2><span class="sub">Mission objectives</span>
+        <button class="back" data-go="home"><span class="kbd">Esc</span>Back</button>
+      </div>
+      <div class="panel-body">
+        <ol class="steps">
+          <li class="step">
+            <span class="step-n">01</span>
+            <h3>Get a wallet</h3>
+            <p>Download <a class="hl" href="https://phantom.app" target="_blank" rel="noopener">Phantom</a> or <a class="hl" href="https://solflare.com" target="_blank" rel="noopener">Solflare</a>. Write your seed phrase down and never share it with anyone.</p>
+          </li>
+          <li class="step">
+            <span class="step-n">02</span>
+            <h3>Load up on SOL</h3>
+            <p>Buy <span class="hl">SOL</span> in your wallet or on an exchange, then send it to your wallet address. Keep a little extra for fees.</p>
+          </li>
+          <li class="step">
+            <span class="step-n">03</span>
+            <h3>Head to the deal</h3>
+            <p>Go to <span class="hl">pump.fun</span> or <span class="hl">Jupiter</span> and connect your wallet. Use the buttons below so you land on the right token.</p>
+          </li>
+          <li class="step">
+            <span class="step-n">04</span>
+            <h3>Swap for $WASTED</h3>
+            <p>Paste the <span class="hl">contract address</span>, pick your amount and confirm. Mission passed, respect +</p>
+          </li>
+        </ol>
+
+        <div class="buy-ca">
+          <div class="buy-ca-text">
+            <span class="eyebrow">Contract address · always check it</span>
+            <code data-ca></code>
+          </div>
+          <button class="btn btn-light" data-copy>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+            <span class="copy-txt">Copy CA</span>
+          </button>
+        </div>
+        <div class="buy-links">
+          <a class="btn btn-red" data-link="pump">Buy on pump.fun</a>
+          <a class="btn btn-ghost" data-link="jup">Swap on Jupiter</a>
+          <a class="btn btn-ghost" data-link="dex">View chart</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOKENOMICS -->
+    <section class="panel" id="page-stats" aria-labelledby="h-stats" inert>
+      <div class="panel-head">
+        <h2 id="h-stats">Tokenomics</h2><span class="sub">Player stats</span>
+        <button class="back" data-go="home"><span class="kbd">Esc</span>Back</button>
+      </div>
+      <div class="panel-body">
+        <div class="stats">
+          <div class="stat-list" id="statRows"></div>
+          <div class="live">
+            <div class="live-head">
+              <span class="live-dot" id="liveDot"></span>
+              <span class="eyebrow" id="liveLabel">Market · connecting…</span>
+            </div>
+            <div class="live-grid">
+              <div class="card"><span class="k">Price</span><span class="v" id="mPrice">—</span></div>
+              <div class="card"><span class="k">Market cap</span><span class="v" id="mCap">—</span></div>
+              <div class="card"><span class="k">Liquidity</span><span class="v" id="mLiq">—</span></div>
+              <div class="card"><span class="k">24h volume</span><span class="v" id="mVol">—</span></div>
+            </div>
+            <div class="card card-wide">
+              <span class="k">24h change</span>
+              <span class="v" id="mChg">—</span>
+            </div>
+            <a class="btn btn-ghost btn-block" data-link="dex">Open full chart</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEME WALL -->
+    <section class="panel" id="page-memes" aria-labelledby="h-memes" inert>
+      <div class="panel-head">
+        <h2 id="h-memes">Meme wall</h2><span class="sub" id="memeCount">Hall of fame</span>
+        <button class="chip-btn" id="shuffle">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+          Shuffle
+        </button>
+        <button class="back" data-go="home"><span class="kbd">Esc</span>Back</button>
+      </div>
+      <div class="panel-body">
+        <div class="gallery" id="gallery"></div>
+        <p class="credit">Memes collected from <a href="https://knowyourmeme.com/memes/wasted/photos" target="_blank" rel="noopener">Know Your Meme</a>. Hover to play, click to open.</p>
+      </div>
+    </section>
+
+    <!-- WASTED-IFY -->
+    <section class="panel" id="page-studio" aria-labelledby="h-studio" inert>
+      <div class="panel-head">
+        <h2 id="h-studio">Wasted-ify</h2><span class="sub">Turn any fail into a meme</span>
+        <button class="back" data-go="home"><span class="kbd">Esc</span>Back</button>
+      </div>
+      <div class="panel-body panel-body-flex">
+        <div class="studio">
+          <label class="canvas-stage" id="stage" for="sFile">
+            <canvas id="wcanvas" width="1200" height="800"></canvas>
+            <span class="empty">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+              <strong>Drop, paste or pick an image</strong>
+              <small>PNG or JPG. It never leaves your browser.</small>
+            </span>
+          </label>
+          <div class="controls">
+            <input type="file" id="sFile" accept="image/*" hidden>
+            <div class="ctl-row two">
+              <label class="btn btn-light btn-sm" for="sFile">Upload image</label>
+              <button class="btn btn-ghost btn-sm" id="sRandom">Random meme</button>
+            </div>
+
+            <label class="ctl"><span>Grayscale <output id="oGray">100%</output></span><input type="range" id="sGray" min="0" max="100" value="100"></label>
+            <label class="ctl"><span>Darken <output id="oDark">20%</output></span><input type="range" id="sDark" min="0" max="60" value="20"></label>
+            <label class="ctl"><span>Text size <output id="oSize">60%</output></span><input type="range" id="sSize" min="30" max="95" value="60"></label>
+            <label class="ctl"><span>Text position <output id="oPos">50%</output></span><input type="range" id="sPos" min="15" max="85" value="50"></label>
+            <label class="toggle"><input type="checkbox" id="sBand" checked><i></i>Black band</label>
+
+            <div class="ctl-row">
+              <button class="btn btn-red btn-block" id="sDownload">Download PNG</button>
+            </div>
+            <button class="link-btn" id="sCopy">Copy image to clipboard</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom bar -->
+  <footer class="bottom">
+    <div class="socials">
+      <a class="soc" data-link="x" data-name="X" aria-label="X"><svg viewBox="0 0 24 24" class="fill"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25H8.1l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg></a>
+      <a class="soc" data-link="telegram" data-name="Telegram" aria-label="Telegram"><svg viewBox="0 0 24 24" class="fill"><path d="M21.94 4.3 18.7 19.6c-.24 1.08-.88 1.34-1.78.84l-4.92-3.63-2.37 2.29c-.26.26-.48.48-.99.48l.35-5.02 9.14-8.26c.4-.35-.09-.55-.62-.2L6.21 13.2l-4.86-1.52c-1.06-.33-1.08-1.06.22-1.57L20.6 2.77c.88-.32 1.65.2 1.34 1.53z"/></svg></a>
+      <a class="soc" data-link="pump" aria-label="pump.fun"><svg viewBox="0 0 24 24"><rect x="2.5" y="8.5" width="19" height="7" rx="3.5" transform="rotate(-35 12 12)"/><path d="M9.6 8.6l4.8 6.8"/></svg></a>
+      <a class="soc" data-link="dex" aria-label="DexScreener"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h6v6"/></svg></a>
+    </div>
+    <p class="fineprint">$WASTED is a meme coin with no intrinsic value or expectation of financial return. Not affiliated with Rockstar Games.</p>
+    <div class="keys" aria-hidden="true">
+      <span><i class="kbd">W</i>Get wasted</span>
+      <span><i class="kbd">C</i>Copy CA</span>
+      <span><i class="kbd">Q</i><i class="kbd">E</i>Tabs</span>
+      <button class="sound" id="sound" aria-pressed="true" title="Toggle sound (M)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="mute" d="M16 9l6 6M22 9l-6 6"/></svg>
+      </button>
+    </div>
+  </footer>
+
+  <!-- Death screen -->
+  <div class="death" id="death" aria-hidden="true">
+    <div class="death-band"><img src="assets/wasted.png" srcset="assets/wasted.png 392w, assets/wasted@2x.png 784w" sizes="700px" alt=""></div>
+    <p class="death-hint">Press any key to respawn</p>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Meme viewer" inert>
+    <button class="lb-close" id="lbClose" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <button class="lb-nav prev" id="lbPrev" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="lb-media" id="lbMedia"></div>
+    <button class="lb-nav next" id="lbNext" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+    <p class="lb-count" id="lbCount"></p>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/memes.js"></script>
+  <script src="assets/wasted-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
