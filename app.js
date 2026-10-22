@@ -322,69 +322,90 @@
      Get wasted
      ------------------------------------------------------------------------ */
 
-  let soundOn = true;
-  let actx;
+  // The death sound loops in the background with a random pause between plays.
+  // Browsers block audio until the first interaction, so the loop starts then.
+  const LOOP_VOLUME = 0.45;
+  const DEATH_VOLUME = 0.9;
+  const LOOP_GAP = [7000, 14000]; // ms of silence between plays
+
+  const sfx = new Audio('assets/audio/wasted.mp3');
+  sfx.preload = 'auto';
   const soundBtn = $('#sound');
+  let soundOn = true;
+  let unlocked = false;
+  let loopTimer = 0;
+  let unlockedBySoundBtn = false;
+
+  try {
+    soundOn = localStorage.getItem('wasted-sound') !== 'off';
+  } catch {
+    /* storage unavailable: default to on */
+  }
+  soundBtn.setAttribute('aria-pressed', String(soundOn));
+
+  function play(volume) {
+    clearTimeout(loopTimer);
+    sfx.volume = volume;
+    sfx.currentTime = 0;
+    sfx.play().catch(() => {});
+  }
+
+  function scheduleLoop() {
+    clearTimeout(loopTimer);
+    if (!soundOn || !unlocked) return;
+    const [min, max] = LOOP_GAP;
+    loopTimer = setTimeout(() => {
+      if (document.hidden || document.body.classList.contains('is-dying')) scheduleLoop();
+      else play(LOOP_VOLUME);
+    }, min + Math.random() * (max - min));
+  }
+  sfx.addEventListener('ended', scheduleLoop);
+
+  function unlock(e) {
+    if (unlocked) return;
+    unlocked = true;
+    unlockedBySoundBtn = !!e.target.closest?.('#sound');
+    soundBtn.classList.remove('idle');
+    removeEventListener('pointerdown', unlock, true);
+    removeEventListener('keydown', unlock, true);
+    if (soundOn) play(LOOP_VOLUME);
+  }
+  addEventListener('pointerdown', unlock, true);
+  addEventListener('keydown', unlock, true);
 
   function setSound(on) {
     soundOn = on;
     soundBtn.setAttribute('aria-pressed', String(on));
+    try {
+      localStorage.setItem('wasted-sound', on ? 'on' : 'off');
+    } catch {
+      /* not persisted */
+    }
+    if (on) play(LOOP_VOLUME);
+    else {
+      clearTimeout(loopTimer);
+      sfx.pause();
+    }
   }
   soundBtn.addEventListener('click', () => {
+    // The click that unlocked audio already started it; don't immediately mute
+    if (unlockedBySoundBtn) {
+      unlockedBySoundBtn = false;
+      if (soundOn) return;
+    }
     setSound(!soundOn);
     toast(soundOn ? 'Sound on.' : 'Sound off.');
   });
 
-  function boom(t, from, to, len, gain, out) {
-    const o = actx.createOscillator();
-    const g = actx.createGain();
-    o.type = 'sine';
-    o.frequency.setValueAtTime(from, t);
-    o.frequency.exponentialRampToValueAtTime(to, t + len * 0.6);
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(gain, t + 0.015);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + len);
-    o.connect(g).connect(out);
-    o.start(t);
-    o.stop(t + len + 0.05);
-  }
-
-  function noise(t, len, gain, fFrom, fTo, out) {
-    const buf = actx.createBuffer(1, actx.sampleRate * len, actx.sampleRate);
-    const d = buf.getChannelData(0);
-    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-    const src = actx.createBufferSource();
-    const f = actx.createBiquadFilter();
-    const g = actx.createGain();
-    src.buffer = buf;
-    f.type = 'lowpass';
-    f.frequency.setValueAtTime(fFrom, t);
-    f.frequency.exponentialRampToValueAtTime(fTo, t + len * 0.9);
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(gain, t + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + len);
-    src.connect(f).connect(g).connect(out);
-    src.start(t);
-  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      clearTimeout(loopTimer);
+      sfx.pause();
+    } else scheduleLoop();
+  });
 
   function playWasted() {
-    if (!soundOn) return;
-    try {
-      actx ??= new (window.AudioContext || window.webkitAudioContext)();
-      actx.resume();
-      const t = actx.currentTime + 0.02;
-      const out = actx.createGain();
-      out.gain.value = 0.8;
-      out.connect(actx.destination);
-      // Impact, slow-mo drone, then the hit when the word lands
-      boom(t, 140, 40, 1.6, 0.9, out);
-      noise(t, 1.2, 0.35, 3000, 150, out);
-      boom(t + 0.1, 55, 32, 2.6, 0.35, out);
-      boom(t + 1.1, 110, 30, 2.4, 1, out);
-      noise(t + 1.1, 1.6, 0.4, 1800, 80, out);
-    } catch {
-      /* audio is a nice-to-have */
-    }
+    if (soundOn && unlocked) play(DEATH_VOLUME);
   }
 
   let deathTimer;
