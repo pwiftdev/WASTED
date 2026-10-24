@@ -22,7 +22,7 @@ Then open http://localhost:8080 (set `PORT` to change it).
 
 ## Config
 
-- **Social links:** fill in `LINKS.x` and `LINKS.telegram` at the top of `app.js`. Empty links show a "drops soon" toast.
+- **Social links:** set in `LINKS` at the top of `app.js` (X: https://x.com/Wasted_PF). Empty links show a "drops soon" toast.
 - **Link previews:** once you have a domain, change `og:image` in `index.html` to an absolute URL, e.g. `https://your-domain/assets/og.jpg`. X needs the absolute URL to show the card.
 - **Live data:** price, market cap, volume and 24h change come from the public DexScreener API. No key is needed.
 

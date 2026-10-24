@@ -7,10 +7,9 @@
 
   const CA = 'BvP5kfxFcJ69DA7XJzZcRkyRkqYpPsBA3HSuZbTppump';
 
-  // Fill in x / telegram when the accounts are live. Empty links show a "soon" toast.
+  // Empty links show a "soon" toast instead of navigating.
   const LINKS = {
-    x: '',
-    telegram: '',
+    x: 'https://x.com/Wasted_PF',
     pump: `https://pump.fun/coin/${CA}`,
     dex: `https://dexscreener.com/solana/${CA}`,
     jup: `https://jup.ag/swap/SOL-${CA}`,
